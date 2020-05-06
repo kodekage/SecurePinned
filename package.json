@@ -1,0 +1,20 @@
+{
+  "name": "SecurePinned",
+  "version": "1.0.0",
+  "description": "Save pinned conversations in channels so you don't loose them on slack",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "keywords": ["slack", "secure", "retrieve", "open source"],
+  "author": "Prosper Opara",
+  "license": "MIT",
+  "dependencies": {
+    "@slack/web-api": "^5.8.1",
+    "objects-to-csv": "^1.3.6"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.3"
+  }
+}
