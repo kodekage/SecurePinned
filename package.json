@@ -1,7 +1,7 @@
 {
   "name": "SecurePinned",
   "version": "1.0.0",
-  "description": "Save pinned conversations in channels so you don't loose them on slack",
+  "description": "Saves your important pinned messages on slack so you don't lose them",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js"
