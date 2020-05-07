@@ -13,6 +13,8 @@ I'm building a bot that:
 - Post a summary of the pinned messages;
     - to a special **#pinned_messages** channel
     - to channel members emails
+- creates a PDF summary of every pinned conversations and makes this PDF
+available when triggered by a slash command!
 
 ### Status: Work in progress
 
