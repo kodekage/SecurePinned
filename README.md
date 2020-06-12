@@ -15,6 +15,7 @@ I'm building a bot that:
     - to channel members emails
 - creates a PDF summary of every pinned conversations and makes this PDF
 available when triggered by a slash command!
+- Renders a html page with the pinned conversations
 
 ### Status: Work in progress
 
