@@ -45,26 +45,26 @@
   </style>
 </head>
 <body>
-  <h1>Pinned messages on <%= channel %></h1>
+  <h1>Pinned messages on #<%= channel %> channel</h1>
   <div class="nb">
     <strong>Note:</strong> The messages are rendered chronologically. This means recently pinned messages
     are displayed first followed by older messages.
   </div>
   <% pinned_messages.forEach(item => {%>
     <div class="pinned-item">
-      <strong>msg_ID: <%= item.client_msg_id%></strong>
+      <strong>msg_ID: <%= item.client_message_id%></strong>
       <h5>
-        Message from <%= item.pinned_info.pinned_by%> |
-        Date: <%= new Date(item.pinned_info.pinned_ts * 1000).toLocaleDateString(undefined, {
+        Message from <%= item.dataValues.pinned_by%> |
+        Date: <%= new Date(parseInt(item.dataValues.message_timestamp, 10) * 1000).toLocaleDateString(undefined, {
           day: '2-digit',
           month: '2-digit',
           year: 'numeric'
         })%> |
-        Team : <%= item.team%>
+        Team : <%= item.dataValues.workspace_id%>
       </h5>
       <div class="pinned-message">
         <h5>Message:</h5>
-        <p><%= item.text %></p>
+        <p><%= item.dataValues.message %></p>
       </div>
     </div>
   <% })%>

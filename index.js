@@ -4,42 +4,65 @@ require('dotenv').config();
 const { WebClient } = require('@slack/web-api');
 const bodyParser = require('body-parser');
 const express = require('express');
+const { testDbConnection, addWorkspaceToDb, addChannelToWorkspace, savePinnedMessage, validChannel, getPinnedMessages } = require('./utils');
+const port = process.env.PORT || 8000;
 
 const app = express();
 app.set('views', './views');
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true }))
-const web = new WebClient(process.env.SIMPLE_BOT_TOKEN);
+const web = new WebClient(process.env.BOT_TOKEN);
 
-const options = { channel: 'CA100TWAW' };
-const pinned_messages = [];
+
+testDbConnection();
+addWorkspaceToDb(web);
 
 app.post('/pinned', async  (req, res) => {
-  console.log(req.form);
+  const channelInfo = {
+    workspace_id: req.body.team_id,
+    channel_id: req.body.channel_id,
+    channel_name: req.body.channel_name
+  }
+
+  addChannelToWorkspace(channelInfo);
+
   try {
-    const history = await web.conversations.history(options)
-    history.messages.map((item, index) => {
-      if (item.pinned_info) pinned_messages.push(item);
+    const history = await web.conversations.history({channel: req.body.channel_id})
+    history.messages.map(item => {
+      if (item.pinned_info) {
+        const data = {
+          client_message_id: item.client_msg_id,
+          pinned_by: item.pinned_info.pinned_by,
+          workspace_id: item.team,
+          message: item.text,
+          message_timestamp: item.pinned_info.pinned_ts,
+          pinned_channel: item.pinned_info.channel,
+        }
+        savePinnedMessage(data);
+      };
     })
 
     web.chat.postMessage({
-      channel: 'CA100TWAW',
-      text: `Looks like you lost the pinned messages again :confounded:\n\n Luckily I stored them for you :simple_smile: \n\n https://a4cb7242.ngrok.io/pinned/${options.channel}`
+      channel: req.body.channel_id,
+      text: `Hello <@${req.body.user_id}>,\nLooks like you lost the pinned messages again :confounded:\n\nLuckily I stored them for you :simple_smile: \n\n http://localhost:5000/pinned/${req.body.channel_id}/${req.body.channel_name}`
     })
+
+    console.log("\x1b[33m[SecurePinned] The Pinned Messages where successfully saved to our database\x1b[0m");
+    res.send('securePinned successfully processed your request');
   } catch (e) {
-    console.log(e);
+    console.log('\x1b[31m[SecuredPinned] ERROR =>\x1b[0m', e);
   }
-
-  console.log("Conversations retrieved successfully");
-  res.send('securePinned successfully processed your request');
 })
 
-app.get('/pinned/:channel', (req, res) => {
-  // console.log(req.params);
-  if (req.params.channel !== options.channel) return res.render('error', {message: "Channel does not exist, contact your workspace admin"})
-
-  res.render('index', {pinned_messages, channel: options.channel});
+app.get('/pinned/:channelId/:channelName', async (req, res) => {
+  if (!validChannel(req.params.channelId)) return res.render('error', {message: "Channel does not exist, contact your workspace admin"})
+  
+  const pinned_messages = await getPinnedMessages(req.params.channelId);
+  if (pinned_messages.length === 0) return res.render('empty', { message: "Channel has no pinned message(s)", channel: req.params.channelName });
+  res.render('index', {pinned_messages, channel: req.params.channelName});
 })
 
-app.listen(process.env.PORT || 8000, () => console.log("Server is live on port 8000"));
+app.listen(port, () => console.log(`\x1b[33m[SecurePinned] Server is live on port ${port}\x1b[0m`));
+
+
 
