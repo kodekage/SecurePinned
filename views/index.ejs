@@ -10,63 +10,130 @@
       text-align: center;
       font-family: 'Open Sans', sans-serif;
     }
+    article {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: flex-start;
+      padding: 2em 0;
+    }
+    article section {
+      /* border: 3px solid rgba(0, 0, 0, 0.1); */
+    }
+    .pinnedMessagesContainer {
+      width: 60%;
+      border-radius: 5px;
+      /* width: 20%; */
+      padding: 2em 0;
+      text-align: left;
+      background: #fff;
+      box-shadow: 0 2px 8px 3px rgba(0, 0, 0, 0.07);
+    }
+    .pinnedMessagesContainer h1 {
+      width: 80%;
+      margin: .1em auto;
+      font-size: 40px;
+    }
+    .workspaceDetails {
+      width: 20%;
+    }
+    .workspaceDetails div {
+      /* border: 1px solid greenyellow; */
+      border-radius: 5px;
+      width: 100%;
+      padding: .5em;
+      text-align: center;
+      background: #fff;
+      box-shadow: 0 2px 8px 3px rgba(0, 0, 0, 0.07);
+      margin-bottom: 1em;
+    }
+    .workspaceDetails img {
+      width: 70%;
+      height: 70%;
+      border-radius: 100%;
+    }
     .nb {
-      width: 50%;
+      width: 80%;
       margin: auto;
       text-align: left;
+      /* border: 1px solid red; */
     }
     strong {
       font-size: 13px;
       color: orange;
     }
     .pinned-item {
-      border: 1px solid white;
       border-radius: 5px;
-      width: 50%;
-      margin: 1em auto;
-      padding: 1em;
+      width: 80%;
+      margin: 2em auto;
+      padding: 1em 2em;
       text-align: left;
       background: #fff;
-      box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 3px 0px;
-    }
-    h5 {
-      margin-bottom: 0;
-      /*font-size: 20px;*/
+      box-shadow: 0 2px 8px 3px rgba(0, 0, 0, 0.07);
     }
     .pinned-message p {
-      background: ghostwhite;
-      padding: .5em;
+      background: #F5F5F5;
+      padding: 1em;
       margin-top: 0;
       border-radius: 5px;
     }
     .pinned-message h5 {
-      margin-bottom: 0;
+      margin-bottom: 1em;
+    }
+    #securePinned {
+      background: #111;
+      color: #F5F5F5;
+    }
+    #securePinned h2, #securePinned p {
+      margin: 0;
+      font-size: 30px;
     }
   </style>
 </head>
 <body>
-  <h1>Pinned messages on #<%= channel %> channel</h1>
-  <div class="nb">
-    <strong>Note:</strong> The messages are rendered chronologically. This means recently pinned messages
-    are displayed first followed by older messages.
-  </div>
-  <% pinned_messages.forEach(item => {%>
-    <div class="pinned-item">
-      <strong>msg_ID: <%= item.client_message_id%></strong>
-      <h5>
-        Message from <%= item.dataValues.pinned_by%> |
-        Date: <%= new Date(parseInt(item.dataValues.message_timestamp, 10) * 1000).toLocaleDateString(undefined, {
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric'
-        })%> |
-        Team : <%= item.dataValues.workspace_id%>
-      </h5>
-      <div class="pinned-message">
-        <h5>Message:</h5>
-        <p><%= item.dataValues.message %></p>
+  <article>
+    <section class="workspaceDetails">
+      <div id="securePinned">
+        <h2># SecurePinned</h2>
       </div>
-    </div>
-  <% })%>
+
+      <div>
+        <img src=<%= workspace.workspace_logo %> alt="workspace logo">
+        <h2><%= workspace.workspace_domain %> </h2>
+        <h4>
+          <a href="http://app.slack.com/client/<%=workspace.workspace_id %>" target="blank">
+            <%= workspace.workspace_id %>
+          </a>
+        </h4>
+      </div>
+
+      <aside>
+        Developed by <a href="https://twitter.com/kodekage" target="blanck">kodekage</a>
+      </aside>
+    </section>
+
+    <section class="pinnedMessagesContainer">
+      <h1>Channel: #<%= channel %></h1>
+      
+      <div class="nb">
+        <strong>Note:</strong> Recently pinned messages appear first
+      </div>
+      <% pinned_messages.forEach(item => {%>
+        <div class="pinned-item" id=<%= item.client_message_id %> >
+          <h5>
+            <strong>Pinned By:</strong> <%= item.dataValues.pinned_by%> &nbsp;
+            <strong>Date:</strong> <%= new Date(parseInt(item.dataValues.message_timestamp, 10) * 1000).toLocaleDateString(undefined, {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric'
+            })%>
+          </h5>
+          <div class="pinned-message">
+            <h5><strong>Message</strong></h5>
+            <p><%= item.dataValues.message %></p>
+          </div>
+        </div>
+      <% })%>
+    </section>
+  </article>
 </body>
 </html>
