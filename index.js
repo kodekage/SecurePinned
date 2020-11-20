@@ -44,7 +44,7 @@ app.post('/pinned', async  (req, res) => {
 
     web.chat.postMessage({
       channel: req.body.channel_id,
-      text: `Hello <@${req.body.user_id}>,\nLooks like you lost the pinned messages again :confounded:\n\nLuckily I stored them for you :simple_smile: \n\n https://6ebb56ffa9c7.ngrok.io/pinned/${req.body.channel_id}/${req.body.channel_name}`
+      text: `Hello <@${req.body.user_id}>,\nLooks like you lost the pinned messages again :confounded:\n\nLuckily I stored them for you :simple_smile: \n\n http://localhost:5000/pinned/${req.body.channel_id}/${req.body.channel_name}`
     })
 
     console.log("\x1b[33m[SecurePinned] The Pinned Messages where successfully saved to our database\x1b[0m");
