@@ -1,6 +1,6 @@
 {
-  "name": "SecurePinned",
-  "version": "1.0.0",
+  "name": "secure_pinned",
+  "version": "0.1.0",
   "description": "Saves your important pinned messages on slack so you don't lose them",
   "main": "index.js",
   "scripts": {
