@@ -15,7 +15,7 @@ const addWorkspaceToDb = async (slackbot) => {
    await Workspace.create({
      workspace_id: workspaceInfo.team.id,
      workspace_domain: workspaceInfo.team.domain,
-     workspace_logo: workspaceInfo.team.icon.image_44
+     workspace_logo: workspaceInfo.team.icon.image_230
     })
 
     return 1;
@@ -65,7 +65,7 @@ const validChannel = async (channel_id) => {
   const channelExist = await Channel.findOne({ where: { channel_id } });
 
   if (!channelExist) return false;
-  return true; 
+  return { status: true, workspaceId: channelExist.dataValues.workspace_id }; 
 }
 
 const getPinnedMessages = async (channel_id) => {
@@ -74,11 +74,18 @@ const getPinnedMessages = async (channel_id) => {
   return pinnedMessages;
 }
 
+const getWorkspaceDetails = async (workspace_id) => {
+  const workspace = await Workspace.findOne({ where: { workspace_id }});
+  
+  return workspace.dataValues ;
+}
+
 module.exports = {
   testDbConnection,
   addWorkspaceToDb,
   addChannelToWorkspace,
   savePinnedMessage,
   validChannel,
-  getPinnedMessages
+  getPinnedMessages,
+  getWorkspaceDetails
 }

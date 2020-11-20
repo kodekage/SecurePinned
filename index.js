@@ -4,7 +4,7 @@ require('dotenv').config();
 const { WebClient } = require('@slack/web-api');
 const bodyParser = require('body-parser');
 const express = require('express');
-const { testDbConnection, addWorkspaceToDb, addChannelToWorkspace, savePinnedMessage, validChannel, getPinnedMessages } = require('./utils');
+const { testDbConnection, addWorkspaceToDb, addChannelToWorkspace, savePinnedMessage, validChannel, getPinnedMessages, getWorkspaceDetails } = require('./utils');
 const port = process.env.PORT || 8000;
 
 const app = express();
@@ -55,11 +55,14 @@ app.post('/pinned', async  (req, res) => {
 })
 
 app.get('/pinned/:channelId/:channelName', async (req, res) => {
-  if (!validChannel(req.params.channelId)) return res.render('error', {message: "Channel does not exist, contact your workspace admin"})
+  const channelExist = await validChannel(req.params.channelId);
+  const workspaceDetails = await getWorkspaceDetails(channelExist.workspaceId);
+
+  if (!channelExist.status) return res.render('error', {message: "Channel does not exist, contact your workspace admin"})
   
   const pinned_messages = await getPinnedMessages(req.params.channelId);
   if (pinned_messages.length === 0) return res.render('empty', { message: "Channel has no pinned message(s)", channel: req.params.channelName });
-  res.render('index', {pinned_messages, channel: req.params.channelName});
+  res.render('index', {pinned_messages, workspace: workspaceDetails, channel: req.params.channelName});
 })
 
 app.listen(port, () => console.log(`\x1b[33m[SecurePinned] Server is live on port ${port}\x1b[0m`));
