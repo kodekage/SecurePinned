@@ -4,7 +4,7 @@ require('dotenv').config();
 const { WebClient } = require('@slack/web-api');
 const bodyParser = require('body-parser');
 const express = require('express');
-const { testDbConnection, addWorkspaceToDb, addChannelToWorkspace, savePinnedMessage, validChannel, getPinnedMessages, getWorkspaceDetails } = require('./utils');
+const { testDbConnection, addWorkspaceToDb, addChannelToWorkspace, savePinnedMessage, validChannel, getPinnedMessages, getWorkspaceDetails, deletePinnedMessages } = require('./utils');
 const port = process.env.PORT || 8000;
 
 const app = express();
@@ -64,6 +64,9 @@ app.get('/pinned/:channelId/:channelName', async (req, res) => {
   if (pinned_messages.length === 0) return res.render('empty', { message: "Channel has no pinned message(s)", channel: req.params.channelName });
   res.render('index', {pinned_messages, workspace: workspaceDetails, channel: req.params.channelName});
 })
+
+// Deletes every pinned messages in the database after 24hrs to save cost
+setInterval(deletePinnedMessages, 86_400_000);
 
 app.listen(port, () => console.log(`\x1b[33m[SecurePinned] Server is live on port ${port}\x1b[0m`));
 
