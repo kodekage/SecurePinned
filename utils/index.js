@@ -87,6 +87,17 @@ const deletePinnedMessages = async () => {
   console.log("\x1b[31m[SecurePinned] There was an error, Pinned Messages could not be deleated => ", deleteMessages);
 }
 
+const gracefulShutdown = (server) => {
+  console.log("\x1b[33m[SecurePinned] Application gracefully shutting down...\x1b[0m")
+  server.close(() => {
+    console.log("\x1b[33m[SecurePinned] Server shutdown gracefully\x1b[0m");
+    sequelize.close().then(() => {
+      console.log("\x1b[33m[SecurePinned] Database was successfully shutdown gracefully\x1b[0m");
+      process.exit(0);
+    });
+  });
+};
+
 module.exports = {
   testDbConnection,
   addWorkspaceToDb,
@@ -95,5 +106,6 @@ module.exports = {
   validChannel,
   getPinnedMessages,
   getWorkspaceDetails,
-  deletePinnedMessages
+  deletePinnedMessages,
+  gracefulShutdown
 }

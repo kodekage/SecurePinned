@@ -4,7 +4,8 @@
   "description": "Saves your important pinned messages on slack so you don't lose them",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "keywords": [
     "slack",
