@@ -80,6 +80,13 @@ const getWorkspaceDetails = async (workspace_id) => {
   return workspace.dataValues ;
 }
 
+const deletePinnedMessages = async () => {
+  const deleteMessages = await PinnedMessage.destroy({ truncate: true })
+  if (deleteMessages === 0) return console.log("\x1b[33m[SecurePinned] All pinned messages has been deleted from the database\x1b[0m");
+  
+  console.log("\x1b[31m[SecurePinned] There was an error, Pinned Messages could not be deleated => ", deleteMessages);
+}
+
 module.exports = {
   testDbConnection,
   addWorkspaceToDb,
@@ -87,5 +94,6 @@ module.exports = {
   savePinnedMessage,
   validChannel,
   getPinnedMessages,
-  getWorkspaceDetails
+  getWorkspaceDetails,
+  deletePinnedMessages
 }
