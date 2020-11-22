@@ -4,7 +4,7 @@ require('dotenv').config();
 const { WebClient } = require('@slack/web-api');
 const bodyParser = require('body-parser');
 const express = require('express');
-const { testDbConnection, addWorkspaceToDb, addChannelToWorkspace, savePinnedMessage, validChannel, getPinnedMessages, getWorkspaceDetails, deletePinnedMessages } = require('./utils');
+const { testDbConnection, addWorkspaceToDb, addChannelToWorkspace, savePinnedMessage, validChannel, getPinnedMessages, getWorkspaceDetails, deletePinnedMessages, gracefulShutdown } = require('./utils');
 const port = process.env.PORT || 8000;
 
 const app = express();
@@ -68,7 +68,12 @@ app.get('/pinned/:channelId/:channelName', async (req, res) => {
 // Deletes every pinned messages in the database after 24hrs to save cost
 setInterval(deletePinnedMessages, 86_400_000);
 
-app.listen(port, () => console.log(`\x1b[33m[SecurePinned] Server is live on port ${port}\x1b[0m`));
+const server = app.listen(port, () => console.log(`\x1b[33m[SecurePinned] Server is live on port ${port}\x1b[0m`));
+
+// Graceful application shutdown
+process.on("SIGINT", () => {
+  gracefulShutdown(server);
+})
 
 
 
