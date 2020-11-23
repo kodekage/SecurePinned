@@ -8,10 +8,20 @@ const PinnedMessage = require('../db/models/pinnedmessage')(sequelize, DataTypes
 
 const addWorkspaceToDb = async (slackbot) => {
   const workspaceInfo = await slackbot.team.info();
+  
   if (workspaceInfo.ok) {
    const workSpaceExist = await Workspace.findOne({ where: { workspace_id: workspaceInfo.team.id}})
 
-   if (workSpaceExist) return;
+   if (workSpaceExist) {
+     // udpdate workspace logo if icon changes
+     if (workSpaceExist.dataValues.workspace_logo !== workspaceInfo.team.icon.image_230) {
+       await Workspace.update({ workspace_logo: workspaceInfo.team.icon.image_230}, {
+         where: { workspace_logo: workSpaceExist.dataValues.workspace_logo }
+       });
+     }
+     return;
+   };
+
    await Workspace.create({
      workspace_id: workspaceInfo.team.id,
      workspace_domain: workspaceInfo.team.domain,
