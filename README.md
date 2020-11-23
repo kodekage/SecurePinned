@@ -17,6 +17,12 @@ I'm building a bot that:
 available when triggered by a slash command!
 - Renders a html page with the pinned conversations
 
+### Current Features
+- Pinned messages are persisted in database.
+- Pinned messages can be retreived and viewed on an endpoint provided by SecuredPinned.
+- Pinned messages are delated routinely every 24hrs.
+- Workspace logo is updated on change.
+
 ### Status: Work in progress
 
 > Tech Stack: Node.js, @slack/web-api
