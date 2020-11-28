@@ -10,12 +10,17 @@ const port = process.env.PORT || 8000;
 const app = express();
 app.set('views', './views');
 app.set('view engine', 'ejs');
+app.use(express.static(`${__dirname}/assets`))
 app.use(bodyParser.urlencoded({extended: true }))
 const web = new WebClient(process.env.BOT_TOKEN);
 
 
 testDbConnection();
 addWorkspaceToDb(web);
+
+app.get('/', (req, res) => {
+  res.render('index');
+})
 
 app.post('/pinned', async  (req, res) => {
   const channelInfo = {
@@ -56,13 +61,17 @@ app.post('/pinned', async  (req, res) => {
 
 app.get('/pinned/:channelId/:channelName', async (req, res) => {
   const channelExist = await validChannel(req.params.channelId);
+  if (!channelExist) return res.render('channel_error', { channel: req.params.channelName, message: "Call the /view slash command from your slack workspace to register this channel" })
+  
   const workspaceDetails = await getWorkspaceDetails(channelExist.workspaceId);
-
-  if (!channelExist.status) return res.render('error', {message: "Channel does not exist, contact your workspace admin"})
   
   const pinned_messages = await getPinnedMessages(req.params.channelId);
-  if (pinned_messages.length === 0) return res.render('empty', { message: "Channel has no pinned message(s)", channel: req.params.channelName });
-  res.render('index', {pinned_messages, workspace: workspaceDetails, channel: req.params.channelName});
+  if (pinned_messages.length === 0) return res.render('message_board', { pinned_messages: [], workspace: workspaceDetails, channel: req.params.channelName, message: "This channel has no pinned message(s)" });
+  res.render('message_board', {pinned_messages, workspace: workspaceDetails, channel: req.params.channelName, message: null});
+})
+
+app.get('*', (req, res) => {
+  res.render('404');
 })
 
 // Deletes every pinned messages in the database after 24hrs to save cost

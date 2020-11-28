@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SecurePinned - Page not found</title>
+  <link rel="stylesheet" href="/css/nav.css">
+  <link rel="stylesheet" href="/css/error.css">
+</head>
+<body>
+  <%- include('partials/nav')%>
+  <article>
+    <section>
+      <img src="/dead_emoji.png" alt="dead_emoji">
+      <h2>Channel #<%= channel %> does not exist</h2>
+      <p>
+        <%= message%>
+      </p>
+    </section>
+  </article>
+</body>
+</html>

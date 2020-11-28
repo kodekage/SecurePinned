@@ -1,0 +1,35 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+article {
+  padding-top: 8em;
+}
+section {
+  width: 50%;
+  border-radius: 5px;
+  /* width: 20%; */
+  padding: 2em 0;
+  text-align: center;
+  background: #fff;
+  /* box-shadow: 0 2px 8px 3px rgba(0, 0, 0, 0.07); */
+  margin: auto;
+}
+section img {
+  height: 200px;
+}
+section h2 {
+  font-size: 40px;
+  margin: 0;
+  font-weight: 900;
+}
+
+section p {
+  font-size: 20px;
+  margin: 0;
+}
+
+section h1 {
+  font-size: 100px;
+  font-weight: 900;
+  margin: 0;
+}

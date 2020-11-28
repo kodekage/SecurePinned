@@ -73,9 +73,9 @@ const testDbConnection = async () => {
 
 const validChannel = async (channel_id) => {
   const channelExist = await Channel.findOne({ where: { channel_id } });
-
   if (!channelExist) return false;
-  return { status: true, workspaceId: channelExist.dataValues.workspace_id }; 
+
+  return { workspaceId: channelExist.dataValues.workspace_id }; 
 }
 
 const getPinnedMessages = async (channel_id) => {

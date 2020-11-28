@@ -1,0 +1,81 @@
+body {
+  background: #f8f9f9;
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+  padding: 0;
+  margin: 0;
+}
+article {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  padding: 8em 0 2em;
+}
+.pinnedMessagesContainer {
+  width: 60%;
+  border-radius: 5px;
+  /* width: 20%; */
+  padding: 2em 0;
+  text-align: left;
+  background: #fff;
+  box-shadow: 0 2px 8px 3px rgba(0, 0, 0, 0.07);
+}
+.pinnedMessagesContainer h1 {
+  width: 80%;
+  margin: .1em auto;
+  font-size: 40px;
+  font-weight: bolder;
+}
+.workspaceDetails {
+  width: 20%;
+}
+.workspaceDetails div {
+  /* border: 1px solid greenyellow; */
+  border-radius: 5px;
+  width: 100%;
+  padding: .5em;
+  text-align: center;
+  background: #fff;
+  box-shadow: 0 2px 8px 3px rgba(0, 0, 0, 0.07);
+  margin-bottom: 1em;
+}
+.workspaceDetails img {
+  width: 70%;
+  height: 70%;
+  border-radius: 100%;
+}
+.nb {
+  width: 80%;
+  margin: auto;
+  text-align: left;
+  /* border: 1px solid red; */
+}
+strong {
+  font-size: 13px;
+  color: orange;
+}
+.pinned-item {
+  border-radius: 5px;
+  width: 80%;
+  margin: 2em auto;
+  padding: 1em 2em;
+  text-align: left;
+  background: #fff;
+  box-shadow: 0 2px 8px 3px rgba(0, 0, 0, 0.07);
+}
+.pinned-message p {
+  background: #F5F5F5;
+  padding: 1em;
+  margin-top: 0;
+  border-radius: 5px;
+}
+.pinned-message h5 {
+  margin-bottom: 1em;
+}
+.message {
+  width: 80%;
+  margin: auto;
+}
+.message img {
+  height: 200px;
+}

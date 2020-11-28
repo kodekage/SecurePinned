@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+nav {
+  background: #f8f9f9cc;
+  width: 100%;
+  position: fixed;
+  padding: .5em 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  backdrop-filter: saturate(180%) blur(5px);
+}
+nav img {
+  height: 50px;
+  margin: 0 2em;
+}
+a {
+  text-decoration: none;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: "GT-Walsheim",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;
+  color: #222222;
+}

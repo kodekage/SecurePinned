@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SecurePinned - View all your pinned messages at a go</title>
+  <link rel="stylesheet" href="/css/nav.css">
+  <link rel="stylesheet" href="/css/message_board.css">
+</head>
+<body>
+  <%- include('partials/nav') %>
+  <article>
+    <section class="workspaceDetails">
+      <div>
+        <img src=<%= workspace.workspace_logo %> alt="workspace logo">
+        <h2><%= workspace.workspace_domain %> </h2>
+        <h4>
+          <a href="http://app.slack.com/client/<%=workspace.workspace_id %>" target="blank">
+            <%= workspace.workspace_id %>
+          </a>
+        </h4>
+      </div>
+
+      <aside>
+        Built by <a href="https://twitter.com/kodekage" target="blanck">@kodekage</a>
+      </aside>
+    </section>
+
+    <section class="pinnedMessagesContainer">
+      <h1>Channel: #<%= channel %></h1>
+      
+      <div class="nb">
+        <strong>Note:</strong> Recently pinned messages appear first
+      </div>
+
+      <% if (message) {%>
+        <div class="message">
+          <img src="/dead_emoji.png" alt="dead_emoji">
+          <h4><%= message %></h4>
+        </div>
+      <% } %>
+
+      <% pinned_messages.forEach(item => {%>
+        <div class="pinned-item" id=<%= item.client_message_id %> >
+          <h5>
+            <strong>Pinned By:</strong> <%= item.dataValues.pinned_by%> &nbsp;
+            <strong>Date:</strong> <%= new Date(parseInt(item.dataValues.message_timestamp, 10) * 1000).toLocaleDateString(undefined, {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric'
+            })%>
+          </h5>
+          <div class="pinned-message">
+            <h5><strong>Message</strong></h5>
+            <p><%= item.dataValues.message %></p>
+          </div>
+        </div>
+      <% })%>
+    </section>
+  </article>
+</body>
+</html>
